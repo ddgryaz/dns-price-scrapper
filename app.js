@@ -11,7 +11,8 @@ async function scrapper() {
     const mdb = await dbConnector.connect()
 
     const browser = await puppeteer.launch({
-        headless: true
+        headless: true,
+        args: ['--no-sandbox', '- disable-setuid-sandbox'] // Помогает при запуске через systemd
     })
     const page = await browser.newPage()
     await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3738.0 Safari/537.36')
@@ -23,9 +24,6 @@ async function scrapper() {
 
     let price = dualPrice.split('₽')[0]
     price = price.replace(/\s+/g, '')
-
-    // const price = 132219 // mock
-    // const priceWith24 = 149999 // mock
 
     if (priceWith24 || price) {
         await mdb.collection('checkPrice').insertOne({
@@ -40,8 +38,14 @@ async function scrapper() {
         const lastPrices = await mdb.collection('checkPrice').find({}).sort({_id: -1}).limit(2).toArray()
 
         if (lastPrices[0].price !== lastPrices[1].price || lastPrices[0].priceWith24 !== lastPrices[1].priceWith24) {
-            await mailService.sendMail(settings.sendTo, lastPrices[0].price, lastPrices[0].priceWith24)
+            await mailService.sendMail(settings.sendTo,
+                lastPrices[0].price,
+                lastPrices[0].priceWith24,
+                lastPrices[1].price,
+                lastPrices[1].priceWith24)
             log(`Message has been sent to ${settings.sendTo}`)
+        } else {
+            log('The price has not changed')
         }
     }
 

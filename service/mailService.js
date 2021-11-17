@@ -15,7 +15,7 @@ class MailService {
         })
     }
 
-    async sendMail (to, price, priceWith24) {
+    async sendMail (to, price, priceWith24, oldPrice, oldPriceWith24) {
         await this.transporter.sendMail({
             from: settings.mailer.user,
             to,
@@ -23,12 +23,14 @@ class MailService {
             text: '',
             html:
                 `
-                    <div>
-                        <h1>Софтина крутится - чекай скидняк</h1>
-                        <p>Цена с рассрочкой сейчас: ${priceWith24}</p>
-                        <p>Цена за наличку сейчас: ${price}</p>
-                        <a href="${settings.url}">Скорее беги покупать!</a>
-                    </div>
+                   <div>
+                       <h1>Цена на Xiaomi Mi TV Q1 75 изменилась!</h1>
+                       <p style="font-size: 20px">Предложение СЕГОДНЯ: <b style="color: red">Наличка - ${price}, Рассрочка - ${priceWith24}</b></p>
+                       <hr />
+                       <p style="font-size: 17px">Старая цена: <b style="color: #23299e">Наличка - ${oldPrice}, Рассрочка - ${oldPriceWith24}</b></p>
+                       <hr />
+                       <a href="${settings.url}" style="font-size: 22px">Ссылка на товар!</a>
+                   </div>
                 `
         })
     }
@@ -41,10 +43,12 @@ class MailService {
             text: '',
             html:
                 `
-                    <div>
-                        <h1>Произошла ошибка</h1>
-                        <p>${error}</p>
-                    </div>
+                   <div>
+                       <h1>Произошла ошибка! :(</h1>
+                       <hr />
+                       <p style="font-size: 20px">ERROR MESSAGE: <b style="color: red">${error}</b></p>
+                       <hr />
+                   </div>
                 `
         })
     }

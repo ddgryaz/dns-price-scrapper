@@ -1,0 +1,17 @@
+[Unit]
+Description=When you really want to buy a TV and expect a discount :)
+Wants=network.target
+After=syslog.target network.target
+[Service]
+WorkingDirectory=NEED TO WRITE!!
+ExecStart=NEED TO WRITE!!
+Restart=always
+RestartSec=7200
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=dns-price-scrapper
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

@@ -1,13 +1,13 @@
 {
   "name": "dns-price-scrapper",
   "version": "1.0.0",
-  "description": "",
+  "description": "When you really want to buy a TV and expect a discount :)",
+  "license": "ISC",
+  "author": "Dmitriy Dzyuman",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
-  "author": "Dmitriy Dzyuman",
-  "license": "ISC",
   "dependencies": {
     "MinimalMongodb": "git+https://git.ans.aero/Libs/MinimalMongodb.git",
     "dotenv": "^10.0.0",
